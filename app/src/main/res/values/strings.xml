@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">Bluetooth Page Turner</string>
+    <string name="intro">Use your phone as a Bluetooth keyboard to turn pages.</string>
+    <string name="hid_heading">Bluetooth HID</string>
+    <string name="device_heading">Target device</string>
+    <string name="no_device">Select a paired device</string>
+    <string name="unnamed_device">Unnamed device</string>
+    <string name="device_label">%1$s · %2$s</string>
+    <string name="retry">Refresh / Register HID</string>
+    <string name="settings">Pair in Bluetooth settings</string>
+    <string name="connect">Connect</string>
+    <string name="disconnect">Disconnect</string>
+    <string name="previous">Previous</string>
+    <string name="next">Next</string>
+    <string name="previous_hint">Sends Left Arrow</string>
+    <string name="next_hint">Sends Right Arrow</string>
+    <string name="foreground_hint">Keep this app open while testing. Volume buttons are planned after the Bluetooth HID link is verified.</string>
+    <string name="status_stopped">HID stopped</string>
+    <string name="status_permission">Nearby devices permission required</string>
+    <string name="status_unsupported">HID unsupported</string>
+    <string name="status_disabled">Bluetooth disabled — enable it in Settings</string>
+    <string name="status_registering">HID registering…</string>
+    <string name="status_ready">HID ready</string>
+    <string name="status_no_device">HID ready · No device selected</string>
+    <string name="status_connecting">Connecting…</string>
+    <string name="status_connected">Connected</string>
+    <string name="status_disconnecting">Disconnecting…</string>
+    <string name="status_disconnected">Disconnected</string>
+    <string name="status_connection_failed">Connection failed</string>
+    <string name="status_error">HID error</string>
+    <string name="error_permission">Allow Nearby devices, then tap Refresh / Register HID. If permission was denied permanently, enable it in Android app settings.</string>
+    <string name="error_proxy">HID Device Profile is unavailable on this phone.</string>
+    <string name="error_proxy_timeout">HID service did not respond. Check Bluetooth, then retry. Profile support is unconfirmed.</string>
+    <string name="error_register">Could not register HID. Another HID app may be active. Close it and retry.</string>
+    <string name="error_unregistered">Android cancelled HID registration. Keep the app in front and tap Refresh / Register HID.</string>
+    <string name="error_service">Bluetooth HID service was lost. Check Bluetooth and retry.</string>
+    <string name="error_connect">The host did not connect. Check its HID support and pairing, then retry.</string>
+    <string name="error_disconnect">Could not disconnect. Retry or turn Bluetooth off in Settings.</string>
+    <string name="error_report">Could not send the keyboard report. Check the connection.</string>
+    <string name="error_release">Key release failed. Disconnecting to prevent a held key; check the host before reconnecting.</string>
+    <string name="error_bluetooth">Bluetooth operation failed. Check Bluetooth and retry; details are in Logcat.</string>
+    <string name="error_settings">Bluetooth settings are unavailable on this device.</string>
+</resources>

@@ -1,0 +1,16 @@
+Bluetooth Page Turner
+Original application code: Copyright (c) 2026 Xiong Chao. MIT License.
+
+Kotlin standard library 2.2.10
+Copyright JetBrains s.r.o. and respective authors and developers.
+Licensed under the Apache License, Version 2.0.
+https://github.com/JetBrains/kotlin/tree/v2.2.10
+See Kotlin-Apache-2.0.txt and Kotlin-NOTICE.txt.
+
+JetBrains annotations 13.0 (Kotlin transitive dependency)
+Copyright JetBrains s.r.o.
+Licensed under the Apache License, Version 2.0.
+https://github.com/JetBrains/java-annotations
+The Apache license is included in Kotlin-Apache-2.0.txt.
+
+JUnit and Hamcrest are test-only dependencies, not part of this APK.
