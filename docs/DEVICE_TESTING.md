@@ -1,19 +1,25 @@
-# Manual device validation
+# Device testing
 
-Status: **not run**. No Android device was attached when the initial skeleton was built.
+Hardware validation status: **pending** for `0.1.0-dev`.
 
-## Record the environment
+This guide records the Bluetooth HID connection and page-navigation workflow needed for
+the first release. Follow-up volume-button controls depend on successful validation of
+this workflow.
 
-| Item | Result |
+## Environment record
+
+Include the following details in a compatibility report:
+
+| Item | Record |
 | --- | --- |
-| Phone model / Android version / build | Not recorded |
-| App version / Git commit | 0.1.0-dev; record tested commit |
-| Target model / firmware | Kindle Paperwhite 6; firmware not recorded |
-| Kindle HID support / forwarding setup | Not verified |
-| KOReader version / active key mapping | Not recorded |
-| Pairing direction and steps | Not recorded |
+| Phone | Model, Android version, and build |
+| App | Version and tested Git commit |
+| Host | Model, operating system, and firmware |
+| Input integration | HID support and host-side event forwarding |
+| Reading application | Version, focus, and active key mapping |
+| Pairing | Direction and exact steps |
 
-Do not publish Bluetooth addresses or account/serial identifiers in reports.
+Redact Bluetooth addresses, account identifiers, and serial numbers from shared reports.
 
 ## Install and register
 
@@ -25,65 +31,79 @@ adb shell am start -n org.androidpageturner/.MainActivity
 adb logcat -s HidManager MainActivity
 ```
 
-1. Turn Bluetooth on and complete pairing using system UI on the phone/host.
-2. Open the app. On Android 12+, tap Refresh / Register HID and allow Nearby devices.
-3. Expect `HID service available`, `Register HID app`, `HID app registered` in Logcat.
-4. If unsupported/timeout/error is shown, record the exact status and Android version. A timeout
-   alone does not prove the profile is unsupported. Close other HID apps, check Bluetooth and retry.
+1. Enable Bluetooth and complete pairing through the phone/host system settings.
+2. Open the app. On Android 12 or later, select **Refresh / Register HID** and allow
+   Nearby devices access.
+3. Check for `HID service available`, `Register HID app`, and `HID app registered` in Logcat.
+4. Record the UI status and Android version for service or registration errors. Retry after
+   checking Bluetooth and any competing HID registration. A timeout calls for further
+   diagnosis of profile availability.
 
-For first diagnosis, a computer with a simple key-event viewer or a text editor is useful:
-Left / Right should move a cursor once. This isolates phone HID behavior before Kindle forwarding.
-Testing a computer does not replace the requested Kindle + KOReader test.
+A computer with a text editor or key-event viewer can help establish initial input delivery:
+Left and Right should each move the cursor once. Validate the intended reading host after
+this baseline check.
 
-## Connect and verify input
+## Connect and navigate
 
-1. Pick the paired host and tap Connect. Wait for Connected, not merely a log saying Connect device.
-2. Keep the phone app visible. Open a book on the host.
-3. Tap Next once; check one Right Arrow and one page advance.
-4. Tap Previous once; check one Left Arrow and one page back.
-5. Repeat at least 20 alternating presses. Check for duplicates or automatic repeats after release.
-6. Press while another pulse is active: the UI is disabled briefly; it does not queue extra pages.
-7. Disconnect, wait for Disconnected, reconnect and test again.
+1. Select the paired host and choose **Connect**. Wait for the **Connected** status.
+2. Keep the phone app visible and open a document on the host.
+3. Press **Next** once; verify one Right Arrow event and one page advance.
+4. Press **Previous** once; verify one Left Arrow event and one page back.
+5. Repeat at least 20 alternating presses, checking event counts and release behavior.
+6. Verify that controls are briefly disabled during each active key pulse.
+7. Choose **Disconnect**, wait for **Disconnected**, reconnect, and repeat the input check.
 
-## Failure and lifecycle checks
+## Error handling and lifecycle
 
-- Deny Nearby devices permission, including permanent denial; UI explains how to retry/enable it.
-- Test with no bonded devices and no selection; Connect and page buttons must be disabled.
-- Connect to a paired device that is not a HID host: failure/timeout must be visible.
-- Turn the host off while connected; page buttons must become disabled after the callback.
-- Turn phone Bluetooth off, then on; registration can recover and connection remains manual.
-- Press Home/open Settings/rotate/lock the phone during a pulse: verify no held/repeating host key.
-- Reopen the app: HID should register again; manually reconnect and test.
-- Close another HID app before testing registration conflicts.
-- If the host requests keyboard LEDs or boot protocol, verify normal key behavior afterward.
+| Scenario | Expected check |
+| --- | --- |
+| Nearby devices permission denied | Clear permission guidance and a working retry/settings path |
+| Empty paired-device list or cleared selection | Connection and page controls remain disabled |
+| Paired host lacks keyboard HID support | Visible connection error or timeout |
+| Host powered off during connection | State updates and page controls become disabled |
+| Phone Bluetooth toggled off and on | Registration recovers; host connection remains user initiated |
+| Home, Settings, rotation, or screen lock during a pulse | Host key state is released and the session is cleaned up |
+| App reopened | HID registers again and manual connection succeeds |
+| Competing HID application active | Registration status and recovery guidance are accurate |
+| Host requests LED reports or boot protocol | Page controls continue to send the expected keys |
 
-## Kindle Paperwhite 6 → KOReader
+## E-reader validation
 
-Verify that the Kindle's Bluetooth stack accepts keyboard HID and forwards events to KOReader.
-If a computer receives arrow keys but Kindle does not, investigate Kindle-side HID support first.
-If Kindle receives input but KOReader does not turn pages, investigate reader bindings/focus.
-Do not change the Android app to use a Kindle private protocol to work around an unverified host path.
+The initial e-reader test configuration is Kindle Paperwhite 6 with KOReader.
+Record firmware, reader version, keyboard input integration, and key mappings for this
+configuration.
 
-App settings currently provide no in-app discovery/pairing. Some hosts need the keyboard SDP
-present at first pairing; record if the system-pairing-then-HID-registration sequence fails.
-If so, design a small, permission-reviewed pairing enhancement after the basic profile is confirmed.
+Validate each step independently:
 
-## Acceptance gate
+1. The host accepts Bluetooth keyboard HID input.
+2. Host-side input handling forwards navigation events to the reader.
+3. The reader interprets Left and Right as the expected page actions.
 
-Record actual results below; leave untested items pending.
+Use a successful computer input test to isolate Android report behavior, then examine host
+input forwarding and reader bindings as needed. Maintain standard keyboard reports across
+host configurations.
+
+Some hosts require keyboard SDP information during initial pairing. Record the complete
+pairing sequence, including app foreground state. Any proposed pairing enhancement should
+address the observed behavior and its permission requirements.
+
+## Acceptance record
+
+Record the environment, tested commit, observed result, and supporting evidence for each
+check. Mark outstanding checks as pending.
 
 | Check | Result |
 | --- | --- |
 | HID Device Profile available | Pending |
 | Registration callback true | Pending |
-| Paired host connected callback | Pending |
-| Left / Right accepted on a computer | Pending |
-| Kindle HID input received | Pending |
-| KOReader Previous / Next once per tap | Pending |
-| No held key after pulse / background / disconnect | Pending |
+| Paired-host connection callback | Pending |
+| Left / Right input received on a computer | Pending |
+| E-reader HID input received | Pending |
+| Reader navigates once per button press | Pending |
+| Key release after pulse, backgrounding, and disconnect | Pending |
 | Manual disconnect and reconnect | Pending |
-| Permission denial and Bluetooth-off recovery | Pending |
+| Permission guidance and Bluetooth recovery | Pending |
 
-**Do not implement volume-key interception until the page-turning path is verified.**
-For the next milestone, foreground dispatchKeyEvent will consume both DOWN and UP for volume keys,
-ignore repeatCount > 0, and emit one HID pulse; no AccessibilityService is planned for that milestone.
+After this workflow passes, validate foreground volume-button handling. The planned
+implementation uses `dispatchKeyEvent`, consumes DOWN and UP events, and emits one HID
+pulse per initial press while suppressing repeated key-down events.

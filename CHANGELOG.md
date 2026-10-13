@@ -1,17 +1,25 @@
 # Changelog
 
-## [Unreleased] — 0.1.0-dev
+Notable project changes are recorded here. The current development version is `0.1.0-dev`.
+
+## Unreleased
 
 ### Added
 
-- Independent Kotlin Android app skeleton with MIT License and dependency provenance.
-- Foreground Bluetooth HID registration and system-paired host selection.
-- Standard keyboard descriptor, LEFT / RIGHT page buttons and timed key release.
-- Manual connect/disconnect, lifecycle cleanup, error feedback and session timeout handling.
-- Pure JVM tests for descriptor size, keyboard reports, pulse timing and UI state eligibility.
-- Build, permissions, privacy and manual device-test documentation.
+- Kotlin Android application with MIT License and documented dependency attribution.
+- Foreground Bluetooth HID registration and paired-host selection.
+- Standard keyboard descriptor, Previous / Next controls, and timed key release.
+- Manual connection management, lifecycle cleanup, status messages, and session timeouts.
+- JVM tests for descriptor structure, keyboard reports, key-pulse timing, and UI state eligibility.
+- Build instructions, permission reference, privacy documentation, and a hardware validation guide.
 
-### Verification boundary
+### Documentation
 
-- Bluetooth HID support and Kindle/KOReader interoperability have not been tested on hardware.
-- Physical volume keys, custom mappings, background use and screen-off support are not implemented.
+- Standardized project, contributor, technical, and validation documentation.
+- Focused the project overview on supported functionality and development milestones.
+
+### Validation status
+
+Compilation, 15 JVM unit tests, and Android Lint passed during initial build verification.
+Hardware validation of Bluetooth HID registration, connection, and page navigation is pending.
+Volume-button controls, configurable mappings, and screen-off operation are planned milestones.

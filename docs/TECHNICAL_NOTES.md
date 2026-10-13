@@ -1,79 +1,100 @@
-# Technical feasibility and implementation boundaries
+# Technical notes
 
-Checked against primary sources on 2026-10-13.
+Primary references reviewed on 2026-10-13.
 
-## Platform API
+## Android HID integration
 
 [`BluetoothHidDevice`](https://developer.android.com/reference/android/bluetooth/BluetoothHidDevice)
-was introduced in API 28 (Android 9). The app requests
+is available from API 28 (Android 9). The app requests
 [`BluetoothProfile.HID_DEVICE`](https://developer.android.com/reference/android/bluetooth/BluetoothProfile#HID_DEVICE)
 through [`BluetoothAdapter.getProfileProxy`](https://developer.android.com/reference/android/bluetooth/BluetoothAdapter#getProfileProxy(android.content.Context,%20android.bluetooth.BluetoothProfile.ServiceListener,%20int)).
-There is no public definitive preflight flag guaranteeing the manufacturer's HID Device implementation.
-An absent adapter / rejected profile request is shown as unsupported; a service timeout is reported
-as inconclusive, with a retry, rather than a definitive hardware diagnosis.
 
-Only one HID app can register at a time. Registration disables the phone's HID Host service until
-unregistration, so concurrently using a Bluetooth keyboard attached to the phone may be affected.
-Android automatically unregisters a non-foreground app. The MVP explicitly cleans up in onStop;
-returning to the Activity acquires a new proxy/registers again and requires manual host connection.
-This also applies to Bluetooth settings and screen-off. No foreground service is present.
+Profile availability is determined during service acquisition and registration. An absent
+adapter or rejected profile request produces an unsupported status. A service timeout
+produces a retryable error, leaving profile availability subject to further validation.
 
-`registerApp`, `connect`, `disconnect`, and `sendReport` booleans acknowledge commands, not final
-state or remote input delivery. This app uses callbacks for state, and a 10-second profile/registration
-timeout and 20-second connection timeout. A timeout invalidates the session to ignore late callbacks.
+Android allows one registered HID application at a time. Registration temporarily disables
+the phone's HID Host service until unregistration, which can affect keyboards attached to
+the phone. Android also unregisters applications that leave the foreground. The current
+implementation manages the HID session through the Activity lifecycle and performs cleanup
+in `onStop`. Returning to the Activity acquires a new proxy and registers again; the user
+then connects the selected host manually.
+
+API return values acknowledge commands. Registration and connection callbacks determine
+application state; hardware tests establish input delivery and page-navigation behavior.
+The profile/registration timeout is 10 seconds, and the connection timeout is 20 seconds.
+A timeout invalidates the session so late callbacks are handled as obsolete.
 
 ## Permissions
 
-[`Bluetooth permissions`](https://developer.android.com/develop/connectivity/bluetooth/bt-permissions)
-distinguishes existing-device communication (CONNECT), discovery (SCAN), and local discoverability
-(ADVERTISE). This app lists bonded devices and uses HID commands; only CONNECT is requested on API 31+.
+The [official permission guide](https://developer.android.com/develop/connectivity/bluetooth/bt-permissions)
+distinguishes paired-device communication (`CONNECT`), discovery (`SCAN`), and local
+discoverability (`ADVERTISE`). This implementation lists paired devices and uses HID commands.
+Android 12 and later require `BLUETOOTH_CONNECT` at runtime.
 
-API 28–30 uses legacy BLUETOOTH and BLUETOOTH_ADMIN, both capped at maxSdkVersion 30.
-Although this app does not discover devices or change adapter settings, the legacy HID service
-enforces ADMIN on registerApp, unregisterApp, connect, disconnect and report operations.
-SCAN, ADVERTISE and location are omitted. The system Settings application owns pairing.
-A future in-app discoverability action would need a new permission review.
+API 28–30 requires `BLUETOOTH` and `BLUETOOTH_ADMIN`, both limited to `maxSdkVersion 30`.
+The legacy HID service enforces ADMIN for registration, connection, disconnection, and report
+operations. The [Android 10 HID service](https://android.googlesource.com/platform/packages/apps/Bluetooth/+/refs/tags/android-10.0.0_r47/src/com/android/bluetooth/hid/HidDeviceService.java)
+provides the primary reference for this behavior.
 
-The [`Android 10 HID service`](https://android.googlesource.com/platform/packages/apps/Bluetooth/+/refs/tags/android-10.0.0_r47/src/com/android/bluetooth/hid/HidDeviceService.java)
-is an additional primary reference for legacy permission enforcement; no implementation is copied.
+The system Bluetooth settings handle pairing. Changes to discovery or pairing behavior
+should include a review of the corresponding permissions and user interaction.
 
-Android 13+ uses explicit receiver flags for the protected Bluetooth state broadcast. Android 15/16
-edge-to-edge system bars are handled using window insets. No Android 17-specific APIs are used; the
-app's target is 36 and newer OS behavior remains a hardware test item.
+The app uses explicit receiver flags for the protected Bluetooth state broadcast on Android
+13 and later. Window insets handle system bars, including enforced edge-to-edge layouts on
+Android 15 and 16. Validation on later Android releases is tracked through device testing.
 
-## Keyboard wire format
+## Keyboard reports
 
-Descriptor items are independently assembled using
+Descriptor items are independently assembled from
 [USB-IF HID 1.11](https://www.usb.org/document-library/device-class-definition-hid-111) and
-[USB-IF HID Usage Tables](https://www.usb.org/document-library/hid-usage-tables-17).
-These are specifications, not copied implementation source or vendored document text.
+[HID Usage Tables](https://www.usb.org/document-library/hid-usage-tables-17).
 
-- Keyboard/Keypad usage page: 0x07.
-- Right Arrow 0x4F; Left Arrow 0x50; Page Up 0x4B; Page Down 0x4E.
-- Report protocol input ID 1: modifier byte, reserved byte, six key usage bytes.
-- Boot protocol input ID 0: the same eight-byte payload.
-- ID is passed separately to Android's `sendReport`; it is not prepended to payload data.
-- One LED output byte is described and accepted; it does not control page turning.
-- GET_REPORT responds with the current input state or stored LED byte; invalid requests receive
-  a handshake error. Host output reports and protocol changes are handled.
+| Field | Value |
+| --- | --- |
+| Usage page | Keyboard/Keypad, `0x07` |
+| Right Arrow / Left Arrow | `0x4F` / `0x50` |
+| Page Up / Page Down | `0x4B` / `0x4E` |
+| Report protocol input ID | `1` |
+| Boot protocol input ID | `0` |
+| Input payload | 8 bytes: modifiers, reserved byte, six key usages |
+| LED output payload | 1 byte |
 
-The 40 ms hold is a starting value to verify, not a guaranteed host debounce interval. No repeated
-keydown reports are sent. Failed key-up attempts are retried twice at 30 ms intervals; persistent
-failure unregisters/disconnects the session. Link loss cannot guarantee delivery of a final key-up;
-host behavior after disconnection must be checked manually.
+The report ID is passed separately to Android's `sendReport` API. `GET_REPORT` returns the
+current input state or stored LED byte. Invalid requests receive a handshake error.
+Output reports and protocol changes are handled through the HID callbacks.
 
-## Build versions
+Each input pulse holds a key for 40 ms before sending an all-zero release report. This
+initial timing is subject to hardware validation. During a pulse, page controls are briefly
+disabled to serialize input. A failed release receives two retries at 30 ms intervals;
+persistent failure triggers HID session teardown. Intentional disconnection attempts a
+final release. Host behavior during link loss is included in lifecycle acceptance testing.
 
-minSdk 28 preserves the official API floor; compileSdk/targetSdk 36 covers Android 16 without
-introducing APIs newer than 28 into the HID implementation. AGP 9.0.1 provides built-in Kotlin 2.2.10.
-Gradle 9.1.0 supports the installed JBR 25; JDK 17 or 21 is recommended for contributors.
+## Code organization
 
-Sources: [AGP 9.0 compatibility](https://developer.android.com/build/releases/agp-9-0-0-release-notes),
-[Gradle Java compatibility](https://docs.gradle.org/current/userguide/compatibility.html).
+| Component | Responsibility |
+| --- | --- |
+| `HidManager` | Profile ownership, registration, connection, state, and lifecycle cleanup |
+| `HidDescriptor` | Keyboard HID descriptor and report constants |
+| `HidKeyboard` | Report generation and key-pulse scheduling |
+| `HidKey` | Standard keyboard usage IDs |
+| `MainActivity` / `MainScreen` | Foreground lifecycle, permissions, and platform UI controls |
 
-## Host boundary
+Protocol encoding and timing are covered by JVM tests. Platform behavior is validated
+through the [device testing guide](DEVICE_TESTING.md).
 
-This is Bluetooth Classic HID, not BLE HOGP, audio control, accessibility input injection or a
-Kindle-specific protocol. A Kindle/Kobo with Bluetooth audio support may still lack keyboard-host
-support. Kindle-side HID event forwarding and KOReader key handling must be validated separately.
-No third-party Kindle integration was installed, copied or checked for device-specific suitability.
+## Build configuration
+
+The API floor is `minSdk 28`; `compileSdk` and `targetSdk` are 36. AGP 9.0.1 provides
+built-in Kotlin 2.2.10. Gradle Wrapper 9.1.0 supports the JBR 25 used for the initial build;
+JDK 17 or 21 is recommended for contributors.
+
+References: [AGP compatibility](https://developer.android.com/build/releases/agp-9-0-0-release-notes)
+and [Gradle Java compatibility](https://docs.gradle.org/current/userguide/compatibility.html).
+
+## Host integration
+
+The transport is Bluetooth Classic HID keyboard input. Compatibility depends on the host's
+keyboard profile, event forwarding, reading-application focus, and key bindings. E-reader
+firmware may require host-side keyboard input integration. These responsibilities are
+validated independently from Android registration and report generation.

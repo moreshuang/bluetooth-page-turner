@@ -1,66 +1,64 @@
-# Dependencies and provenance
+# Dependencies and attribution
 
-Reviewed on 2026-10-13. Original application code is MIT; upstream components keep their own licenses.
-No Komobo, Kindle integration project, or other application's source was incorporated.
-Official Android API descriptions and HID item/usage definitions were used as references;
-application code and descriptor assembly were written independently.
+Reviewed on 2026-10-13.
 
-## Runtime
+Application code and HID descriptor assembly are independently authored using official
+Android API documentation and HID specifications. Project code is licensed under MIT.
+Dependencies retain their upstream licenses and attribution requirements.
 
-| Component | Version / source | License | MIT project use | Notices / redistribution |
+## Runtime dependencies
+
+| Component | Version and source | License | Project use | Attribution and redistribution |
 | --- | --- | --- | --- | --- |
-| Kotlin standard library | 2.2.10, [JetBrains Kotlin](https://github.com/JetBrains/kotlin/tree/v2.2.10) | Apache-2.0 | Compatible dependency; not relicensed as MIT | Preserve license and applicable copyright/NOTICE; bundled in APK assets |
-| JetBrains annotations (stdlib transitive) | 13.0, [artifact POM](https://repo.maven.apache.org/maven2/org/jetbrains/annotations/13.0/annotations-13.0.pom), [project](https://github.com/JetBrains/java-annotations) | Apache-2.0 | Compatible dependency | Preserve license and copyright when distributing component; typically class-retention metadata |
-| Android framework | Platform APIs supplied by the device, [Android source](https://source.android.com/) | Android platform has component-specific licenses; relevant framework is Apache-2.0 | Referencing official APIs does not import implementation source | No framework code is vendored or relicensed; SDK distribution has separate terms |
+| Kotlin standard library | 2.2.10, [source](https://github.com/JetBrains/kotlin/tree/v2.2.10) | Apache-2.0 | Compatible runtime dependency | Retain license and applicable copyright / NOTICE; texts are included in APK assets |
+| JetBrains annotations | 13.0, [project](https://github.com/JetBrains/java-annotations), [POM](https://repo.maven.apache.org/maven2/org/jetbrains/annotations/13.0/annotations-13.0.pom) | Apache-2.0 | Compatible Kotlin transitive dependency | Retain applicable license and copyright when redistributing the component |
 
-No AndroidX, Compose, coroutines, DI, network, analytics, crash-reporting, advertising or cloud SDK.
-The resolved application runtime dependency tree must be checked when versions change.
+The UI and Bluetooth integration use Android platform APIs. The device supplies the
+framework implementation; platform components and the SDK have their own licensing terms.
+Review the resolved runtime dependency tree when changing dependency versions.
 
-## Tests only (not packaged in APK)
+## Test dependencies
 
-| Component | Version / source | License | MIT project use | Notices / redistribution |
+| Component | Version and source | License | Project use | Attribution and redistribution |
 | --- | --- | --- | --- | --- |
-| JUnit | 4.13.2, [project](https://github.com/junit-team/junit4/tree/r4.13.2), [license](https://junit.org/junit4/license.html) | EPL-1.0 | Separate test dependency is compatible with MIT application code | Retain license; distributing JUnit binaries has EPL source availability obligations. No JUnit code is modified or vendored |
-| Hamcrest Core (JUnit transitive) | 1.3, [project and license](https://github.com/hamcrest/JavaHamcrest/blob/hamcrest-java-1.3/LICENSE.txt) | BSD-3-Clause | Compatible dependency | Retain copyright, license conditions and disclaimer if redistributed |
+| JUnit | 4.13.2, [source](https://github.com/junit-team/junit4/tree/r4.13.2), [license](https://junit.org/junit4/license.html) | EPL-1.0 | Compatible, separate test dependency | Retain the license; redistribution of JUnit binaries carries EPL source-availability obligations |
+| Hamcrest Core | 1.3, [source and license](https://github.com/hamcrest/JavaHamcrest/blob/hamcrest-java-1.3/LICENSE.txt) | BSD-3-Clause | Compatible JUnit transitive test dependency | Retain copyright, license conditions, and disclaimer when redistributing |
 
-Tests are independent source code using the JUnit API. Upstream test binaries are downloaded at
-build time and are not included in this repository or APK. License texts are retained for audit.
+The test suite uses the JUnit API. Gradle resolves test binaries for local test execution;
+they remain separate from the application APK. Upstream license texts are retained for review.
 
 ## Build tools
 
-| Component | Version / source | License | MIT project use | Notices / redistribution |
-| --- | --- | --- | --- | --- |
-| Android Gradle Plugin | 9.0.1, [official docs](https://developer.android.com/build/releases/agp-9-0-0-release-notes), [artifact POM](https://dl.google.com/dl/android/maven2/com/android/tools/build/gradle/9.0.1/gradle-9.0.1.pom) | Apache-2.0 | Compatible build tool | Preserve license/NOTICE if redistributing; not vendored or shipped in app |
-| Kotlin compiler / Gradle integration (AGP built-in) | 2.2.10, [project license](https://github.com/JetBrains/kotlin/blob/v2.2.10/license/LICENSE.txt) | Apache-2.0 with distribution notices | Compatible build tool | Retain applicable notices if redistributing; compiler is not packaged in app |
-| Gradle Wrapper | 9.1.0, [Gradle](https://github.com/gradle/gradle/tree/v9.1.0) | Apache-2.0; Gradle distribution also lists third-party terms | Compatible | Wrapper is generated by official Gradle; scripts retain upstream headers, full upstream LICENSE retained |
-| Android SDK / Build Tools | Platform 36 / Build Tools 36.0.0, [SDK terms](https://developer.android.com/studio/terms) | SDK license agreement; underlying components have individual licenses | External compilation tool, not project MIT source | SDK is not redistributed or committed; developer must accept applicable SDK terms |
-| JDK | Developer-provided; initial build uses Android Studio JBR 25 | Runtime distribution has its own licenses | External build tool | No JDK distribution is included in repository/APK |
+| Component | Version and source | License or terms | Attribution and distribution scope |
+| --- | --- | --- | --- |
+| Android Gradle Plugin | 9.0.1, [documentation](https://developer.android.com/build/releases/agp-9-0-0-release-notes), [POM](https://dl.google.com/dl/android/maven2/com/android/tools/build/gradle/9.0.1/gradle-9.0.1.pom) | Apache-2.0 | Compatible build tool; preserve applicable license / NOTICE when redistributing |
+| Kotlin compiler / Gradle integration | 2.2.10, [license](https://github.com/JetBrains/kotlin/blob/v2.2.10/license/LICENSE.txt) | Apache-2.0 with distribution notices | Compatible build tool supplied through AGP; retain applicable distribution notices |
+| Gradle Wrapper | 9.1.0, [source](https://github.com/gradle/gradle/tree/v9.1.0) | Apache-2.0; distribution includes third-party terms | Compatible wrapper generated by official Gradle; upstream script headers and distribution LICENSE are retained |
+| Android SDK / Build Tools | Platform 36 / Build Tools 36.0.0, [SDK terms](https://developer.android.com/studio/terms) | SDK agreement and component-specific licenses | External developer tooling; use and redistribution follow SDK terms |
+| JDK | Developer-provided; initial verification used JBR 25 | Distribution-specific licenses | External developer tooling; retain the provider's terms when redistributing |
 
-Build tools download many transitive components under their respective terms; the table is not
-a claim that an entire toolchain has one license. Keep original tool distributions and their notices
-intact if redistributing them. Do not commit the local `.build-cache`, `.android-sdk` or `.local-tools`.
+Build and test components are used separately from the runtime application. Their transitive
+components retain their respective licenses. Preserve the original tool distributions and
+notices when redistributing tooling. Local SDKs and build caches are excluded from Git.
 
 ## Retained notices
 
-Upstream texts live in `third_party/licenses/`. The APK includes the MIT project license and
-Kotlin Apache license/NOTICE in `assets/licenses/`, plus runtime notices. Copyright for Kotlin
-is attributed to JetBrains and respective authors. Runtime annotations are attributed to JetBrains.
-The Gradle distribution checksum is pinned in `gradle/wrapper/gradle-wrapper.properties`.
+Upstream license texts are stored in [third_party/licenses](third_party/licenses).
+The APK includes project and runtime notices in `assets/licenses/`.
 
-## Review process
+- Project code: Copyright © 2026 Xiong Chao, MIT License.
+- Kotlin: JetBrains and the respective authors, Apache-2.0 with applicable NOTICE.
+- JetBrains annotations: JetBrains, Apache-2.0.
 
-Before introducing a dependency or copied example, explain to the maintainer:
+The Gradle distribution SHA-256 is pinned in `gradle/wrapper/gradle-wrapper.properties`.
 
-```text
-来源 / Source:
-许可证 / License:
-是否兼容 MIT / Compatibility:
-是否需要 Attribution / Required notices:
-```
+## Dependency review
 
-Check the exact version's LICENSE/NOTICE and transitive runtime dependencies; preserve headers and
-source-offer obligations where applicable. A missing LICENSE means no copying, translation or light
-rewrite. Record whether material is reference-only, API use, a dependency, or explicitly vendored code.
+For each proposed dependency or incorporated source, record its source, exact version,
+license, MIT compatibility, and attribution obligations before introduction. Review
+applicable upstream headers, NOTICE files, transitive runtime dependencies, and any
+source-availability obligations.
 
-The app's MIT LICENSE covers independently authored project code, not external libraries, standards
-documents, Android framework implementations, SDK packages or toolchain distributions.
+Record the material's role as a reference, dependency, or incorporated source. Project
+code is covered by the MIT License; upstream libraries, platform implementations,
+specification documents, and tool distributions remain governed by their own terms.
