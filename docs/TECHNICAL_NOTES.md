@@ -41,8 +41,11 @@ The legacy HID service enforces ADMIN for registration, connection, disconnectio
 operations. The [Android 10 HID service](https://android.googlesource.com/platform/packages/apps/Bluetooth/+/refs/tags/android-10.0.0_r47/src/com/android/bluetooth/hid/HidDeviceService.java)
 provides the primary reference for this behavior.
 
-The system Bluetooth settings handle pairing. Changes to discovery or pairing behavior
-should include a review of the corresponding permissions and user interaction.
+Pairing takes place outside the app through Android settings or the host's pairing
+interface. The tested Kindle used its local host API; see the
+[physical device validation report](HARDWARE_VALIDATION.md). Changes to discovery or
+pairing behavior should include a review of the corresponding permissions and user
+interaction.
 
 The app uses explicit receiver flags for the protected Bluetooth state broadcast on Android
 13 and later. Window insets handle system bars, including enforced edge-to-edge layouts on

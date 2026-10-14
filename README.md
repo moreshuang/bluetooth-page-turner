@@ -28,6 +28,16 @@ hardware validation of the initial HID connection and page-navigation workflow.
 Keep the app in the foreground while using the current version. Profile availability
 and input handling depend on the phone, host firmware, and reading application.
 
+## Physical device validation
+
+On 2026-10-14, a Xiaomi 13 running Android 13 paired and connected to a Kindle
+Paperwhite 6 running KOReader. The maintainer confirmed that the on-screen **Next**
+and **Previous** buttons turned pages in both directions. See the
+[device validation report](docs/HARDWARE_VALIDATION.md) for the exact software versions,
+pairing method, host status, and screenshots.
+
+<img src="docs/images/xiaomi13-kindle-connected-2026-10-14.png" width="320" alt="Bluetooth Page Turner connected to a Kindle PW6 on a Xiaomi 13" />
+
 ## How it works
 
 ```text
@@ -67,7 +77,7 @@ See the [build verification record](docs/BUILD_VERIFICATION.md) for the tested e
 ## Usage
 
 1. Install the debug APK and enable Bluetooth on the phone and host.
-2. Complete pairing through the system Bluetooth settings.
+2. Pair the phone with the host using its supported pairing interface.
 3. Open the app. On Android 12 or later, select **Refresh / Register HID** and grant
    the Nearby devices permission.
 4. Wait for **HID ready**, select the paired host, and choose **Connect**.
@@ -75,10 +85,11 @@ See the [build verification record](docs/BUILD_VERIFICATION.md) for the tested e
    and **Next** to navigate.
 6. Choose **Disconnect** to end the session.
 
-Pairing is handled by the system. Returning from Bluetooth settings starts a fresh HID
-session; reconnect from the app before testing page navigation. Some hosts require the
-keyboard's HID service information during initial pairing. Record the pairing sequence
-when reporting compatibility results.
+The tested Kindle setup used the host's local pairing API; see the
+[physical device validation report](docs/HARDWARE_VALIDATION.md) for the command and
+results. Returning from Bluetooth settings starts a fresh HID session; reconnect from
+the app before testing page navigation. Some hosts require the keyboard's HID service
+information during initial pairing. Record the pairing sequence when reporting results.
 
 For setup, troubleshooting, and acceptance checks, see the
 [device testing guide](docs/DEVICE_TESTING.md).
@@ -109,11 +120,12 @@ are part of device validation.
 
 | Host category | Requirements | Validation status |
 | --- | --- | --- |
-| E-readers | Keyboard HID input and reader key bindings | Pending |
+| Kindle Paperwhite 6 with KOReader | Keyboard HID input and reader key bindings | Pairing, connection, and both page directions passed on 2026-10-14 |
+| Other e-readers | Keyboard HID input and reader key bindings | Pending |
 | Tablets | Bluetooth keyboard support and reader navigation | Pending |
 | Desktop computers | Bluetooth Classic HID host and application key handling | Pending |
 
-Hardware testing is the next development milestone. Please include the environment and
+Further hardware testing is the next development milestone. Please include the environment and
 results described in the [device testing guide](docs/DEVICE_TESTING.md) when contributing
 a compatibility report.
 

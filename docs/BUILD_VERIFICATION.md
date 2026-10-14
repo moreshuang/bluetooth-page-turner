@@ -72,8 +72,11 @@ fix was subsequently installed and checked on a physical phone:
 | Refresh | Registration recovered and UI returned to ready |
 | Home and reopen | Application registered again and UI returned to ready |
 
-Host connection, page navigation, key release on the host, and power consumption remain
-pending. Track those results using the [device testing guide](DEVICE_TESTING.md).
+On the same date, the maintainer completed pairing, host connection, and Next/Previous
+page navigation with a Kindle Paperwhite 6 and KOReader. The
+[physical device validation report](HARDWARE_VALIDATION.md) records the exact host
+configuration, connection evidence, and screenshots. Longer-duration input, key-release,
+and power checks remain pending.
 
 The current artifact is a debug-signed development APK. Release signing and distribution
 are subsequent release-management tasks.

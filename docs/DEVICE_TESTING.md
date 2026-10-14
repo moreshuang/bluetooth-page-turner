@@ -1,7 +1,9 @@
 # Device testing
 
-Hardware validation status: **partial** for `0.1.0-dev`. HID registration, refresh, and
-reopening passed on Xiaomi 13 / Android 13 on 2026-10-14. Host input validation is pending.
+Hardware validation status: **partial** for `0.1.0-dev`. HID registration, pairing,
+connection, and both page directions passed on Xiaomi 13 / Android 13 with Kindle
+Paperwhite 6 on 2026-10-14. See the [physical device validation report](HARDWARE_VALIDATION.md)
+for the configuration, procedure, and screenshots.
 
 This guide records the Bluetooth HID connection and page-navigation workflow needed for
 the first release. Follow-up volume-button controls depend on successful validation of
@@ -32,7 +34,8 @@ adb shell am start -n org.androidpageturner/.MainActivity
 adb logcat -s HidManager MainActivity
 ```
 
-1. Enable Bluetooth and complete pairing through the phone/host system settings.
+1. Enable Bluetooth and pair using the host's supported pairing interface. The tested
+   Kindle sequence is recorded in the [validation report](HARDWARE_VALIDATION.md).
 2. Open the app. On Android 12 or later, select **Refresh / Register HID** and allow
    Nearby devices access.
 3. Check for `HID service available`, `Register HID app`, and `HID app registered` in Logcat.
@@ -97,12 +100,14 @@ check. Mark outstanding checks as pending.
 | --- | --- |
 | HID Device Profile available | Passed on Xiaomi 13 / Android 13, 2026-10-14 |
 | Registration callback true | Passed on Xiaomi 13 / Android 13, 2026-10-14 |
-| Paired-host connection callback | Pending |
+| Paired-host connection callback | Passed on Xiaomi 13 and Kindle PW6, 2026-10-14 |
 | Left / Right input received on a computer | Pending |
-| E-reader HID input received | Pending |
-| Reader navigates once per button press | Pending |
+| E-reader HID input received | Passed on Kindle PW6, 2026-10-14 |
+| Reader responds to Next and Previous | Passed in a KOReader book, 2026-10-14 |
+| Exactly one page per press over repeated input | Pending |
 | Key release after pulse, backgrounding, and disconnect | Pending |
-| Manual disconnect and reconnect | Pending |
+| Reconnect after leaving the app | Passed on Xiaomi 13 and Kindle PW6, 2026-10-14 |
+| Manual Disconnect button and reconnect | Pending |
 | Permission guidance and Bluetooth recovery | Pending |
 
 After this workflow passes, validate foreground volume-button handling. The planned

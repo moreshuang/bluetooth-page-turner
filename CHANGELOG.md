@@ -28,5 +28,7 @@ Notable project changes are recorded here. The current development version is `0
 
 Compilation, 15 JVM unit tests, and Android Lint passed during initial build verification.
 HID registration, refresh, and reopening passed on Xiaomi 13 with Android 13 on 2026-10-14.
-Hardware validation of host connection and page navigation is pending.
+Pairing, host connection, and on-screen Next/Previous page navigation passed with a
+Kindle Paperwhite 6 and KOReader on 2026-10-14. The physical device validation report
+includes the test procedure and screenshots.
 Volume-button controls, configurable mappings, and screen-off operation are planned milestones.
