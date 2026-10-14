@@ -1,8 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="app_name">Bluetooth Page Turner</string>
-    <string name="intro">Use your phone as a Bluetooth keyboard to turn pages.</string>
-    <string name="hid_heading">Bluetooth HID</string>
     <string name="device_heading">Target device</string>
     <string name="no_device">Select a paired device</string>
     <string name="unnamed_device">Unnamed device</string>
@@ -11,11 +9,12 @@
     <string name="settings">Pair in Bluetooth settings</string>
     <string name="connect">Connect</string>
     <string name="disconnect">Disconnect</string>
-    <string name="previous">Previous</string>
-    <string name="next">Next</string>
-    <string name="previous_hint">Sends Left Arrow</string>
-    <string name="next_hint">Sends Right Arrow</string>
-    <string name="foreground_hint">Keep this app open while testing. Volume buttons are planned after the Bluetooth HID link is verified.</string>
+    <string name="page_controls">Page controls</string>
+    <string name="previous_large">←\nPrevious</string>
+    <string name="next_large">Next\n→</string>
+    <string name="previous_description">Previous page, Left Arrow</string>
+    <string name="next_description">Next page, Right Arrow</string>
+    <string name="foreground_hint">Keep this screen open while turning pages. Volume-button control is planned.</string>
     <string name="status_stopped">HID stopped</string>
     <string name="status_permission">Nearby devices permission required</string>
     <string name="status_unsupported">HID unsupported</string>

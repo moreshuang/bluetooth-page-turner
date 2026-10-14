@@ -14,7 +14,7 @@ hardware validation of the initial HID connection and page-navigation workflow.
 
 - Standard HID keyboard registration through Android's `BluetoothHidDevice` API.
 - Paired-device selection with manual connection and disconnection.
-- Previous and Next controls mapped to Left Arrow and Right Arrow.
+- Large, distinct Previous and Next controls mapped to Left Arrow and Right Arrow.
 - Timed key release, connection status, and actionable error messages.
 - Foreground operation with session cleanup when leaving the app.
 - JVM unit tests for keyboard reports, descriptor structure, and key-pulse timing.
@@ -36,7 +36,7 @@ and **Previous** buttons turned pages in both directions. See the
 [device validation report](docs/HARDWARE_VALIDATION.md) for the exact software versions,
 pairing method, host status, and screenshots.
 
-<img src="docs/images/xiaomi13-kindle-connected-2026-10-14.png" width="320" alt="Bluetooth Page Turner connected to a Kindle PW6 on a Xiaomi 13" />
+<img src="docs/images/xiaomi13-large-page-controls-2026-10-14.png" width="320" alt="Large Previous and Next page controls connected to a Kindle PW6 on a Xiaomi 13" />
 
 ## How it works
 
@@ -87,8 +87,8 @@ See the [build verification record](docs/BUILD_VERIFICATION.md) for the tested e
 
 The tested Kindle setup used the host's local pairing API; see the
 [physical device validation report](docs/HARDWARE_VALIDATION.md) for the command and
-results. Returning from Bluetooth settings starts a fresh HID session; reconnect from
-the app before testing page navigation. Some hosts require the keyboard's HID service
+results. Leaving the app foreground disconnects the HID session; reopen the app and
+connect again to resume page navigation. Some hosts require the keyboard's HID service
 information during initial pairing. Record the pairing sequence when reporting results.
 
 For setup, troubleshooting, and acceptance checks, see the

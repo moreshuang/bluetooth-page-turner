@@ -3,6 +3,10 @@
 Initial verification date: 2026-10-13 (Asia/Shanghai). App version: `0.1.0-dev`.
 Registration fix verification date: 2026-10-14 (Asia/Shanghai). Debug assembly, all 15 JVM
 unit tests, and Android Lint passed again with the same toolchain.
+Page-control UI verification date: 2026-10-14 (Asia/Shanghai). The same build checks
+passed after the layout update. The debug APK was installed on Xiaomi 13 and the
+connected layout was captured and inspected at 1080 × 2400 pixels. ADB taps on both
+enlarged controls logged the expected Left and Right Arrow actions.
 
 ## Environment
 

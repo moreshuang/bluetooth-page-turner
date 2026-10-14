@@ -12,6 +12,7 @@ Notable project changes are recorded here. The current development version is `0
 - Manual connection management, lifecycle cleanup, status messages, and session timeouts.
 - JVM tests for descriptor structure, keyboard reports, key-pulse timing, and UI state eligibility.
 - Build instructions, permission reference, privacy documentation, and a hardware validation guide.
+- Large blue and green page controls with direction arrows and accessible labels.
 
 ### Documentation
 
@@ -31,4 +32,7 @@ HID registration, refresh, and reopening passed on Xiaomi 13 with Android 13 on 
 Pairing, host connection, and on-screen Next/Previous page navigation passed with a
 Kindle Paperwhite 6 and KOReader on 2026-10-14. The physical device validation report
 includes the test procedure and screenshots.
+The maintainer confirmed foreground-exit disconnection and working in-app Connect and
+Disconnect controls. The enlarged controls were inspected and exercised through ADB on
+the Xiaomi 13 while connected to the Kindle host.
 Volume-button controls, configurable mappings, and screen-off operation are planned milestones.

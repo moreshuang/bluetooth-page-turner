@@ -55,6 +55,23 @@ outside the published image.
 
 ![Android Bluetooth settings showing Kindle PW6 saved as a paired device](images/xiaomi13-kindle-paired-2026-10-14.png)
 
+## Stability observations and interface update
+
+In a follow-up test on 2026-10-14, the maintainer confirmed that the app's **Connect**
+and **Disconnect** controls worked. Leaving the app foreground disconnected the HID
+session, consistent with the current Activity lifecycle. Foreground exit therefore
+requires reopening the app and connecting again to resume page control.
+
+The page controls were enlarged in a subsequent development build. On the Xiaomi 13,
+each button measured approximately 200 dp high and occupied half the available row.
+The buttons have distinct blue and green backgrounds, direction arrows, text labels,
+and accessibility descriptions. The connected screen was captured with ADB after the
+layout change. ADB taps on both controls logged `Send RIGHT_ARROW` and
+`Send LEFT_ARROW`; the phone remained connected and the Kindle host reported
+`hid_ready: true`.
+
+![Enlarged blue Previous and green Next controls on the connected Xiaomi 13](images/xiaomi13-large-page-controls-2026-10-14.png)
+
 ## Follow-up validation
 
 Repeat page navigation over a longer session, verify key release and recovery after

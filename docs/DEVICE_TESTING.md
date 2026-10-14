@@ -105,9 +105,11 @@ check. Mark outstanding checks as pending.
 | E-reader HID input received | Passed on Kindle PW6, 2026-10-14 |
 | Reader responds to Next and Previous | Passed in a KOReader book, 2026-10-14 |
 | Exactly one page per press over repeated input | Pending |
-| Key release after pulse, backgrounding, and disconnect | Pending |
+| Foreground exit disconnects the HID session | Passed on Xiaomi 13, maintainer report, 2026-10-14 |
+| Key release after pulse and disconnect | Pending |
 | Reconnect after leaving the app | Passed on Xiaomi 13 and Kindle PW6, 2026-10-14 |
-| Manual Disconnect button and reconnect | Pending |
+| App Connect and Disconnect controls | Passed on Xiaomi 13 and Kindle PW6, maintainer report, 2026-10-14 |
+| Reconnect after manual Disconnect | Pending |
 | Permission guidance and Bluetooth recovery | Pending |
 
 After this workflow passes, validate foreground volume-button handling. The planned

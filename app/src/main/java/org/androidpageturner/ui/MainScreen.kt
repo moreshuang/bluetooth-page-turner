@@ -3,6 +3,10 @@
 package org.androidpageturner.ui
 
 import android.content.Context
+import android.content.res.ColorStateList
+import android.graphics.Color
+import android.graphics.Typeface
+import android.view.Gravity
 import android.view.View
 import android.widget.AdapterView
 import android.widget.ArrayAdapter
@@ -27,7 +31,7 @@ class MainScreen(
     onPrevious: () -> Unit,
     onNext: () -> Unit,
 ) {
-    val root = ScrollView(context)
+    val root = ScrollView(context).apply { isFillViewport = true }
     private val content = LinearLayout(context).apply { orientation = LinearLayout.VERTICAL }
     private val status = TextView(context)
     private val error = TextView(context)
@@ -41,7 +45,7 @@ class MainScreen(
 
     init {
         root.addView(content)
-        val padding = dp(24)
+        val padding = dp(20)
         content.setPadding(padding, padding, padding, padding)
         // Handles enforced edge-to-edge on targetSdk 35+ and legacy system bars.
         root.setOnApplyWindowInsetsListener { _, insets ->
@@ -54,16 +58,15 @@ class MainScreen(
             insets.consumeSystemWindowInsets()
         }
         text(R.string.app_name, 26f)
-        text(R.string.intro, 16f)
-        text(R.string.hid_heading, 18f)
         status.textSize = 20f
+        status.setTypeface(null, Typeface.BOLD)
         add(status)
         error.textSize = 16f
         add(error)
-        button(R.string.retry, onRefresh)
         text(R.string.device_heading, 18f)
         devicePicker.adapter = ArrayAdapter(context, android.R.layout.simple_spinner_dropdown_item,
             listOf(context.getString(R.string.no_device)))
+        devicePicker.minimumHeight = dp(56)
         add(devicePicker)
         devicePicker.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
             override fun onItemSelected(parent: AdapterView<*>?, view: View?, position: Int, id: Long) {
@@ -74,14 +77,30 @@ class MainScreen(
             }
             override fun onNothingSelected(parent: AdapterView<*>?) = Unit
         }
-        button(R.string.settings, onSettings)
+        val connectionActions = LinearLayout(context).apply { orientation = LinearLayout.HORIZONTAL }
         connect = button(R.string.connect, onConnect)
         disconnect = button(R.string.disconnect, onDisconnect)
-        previous = button(R.string.previous, onPrevious)
-        text(R.string.previous_hint, 14f)
-        next = button(R.string.next, onNext)
-        text(R.string.next_hint, 14f)
-        text(R.string.foreground_hint, 16f)
+        connectionActions.addView(connect, LinearLayout.LayoutParams(0, dp(56), 1f).apply {
+            marginEnd = dp(8)
+        })
+        connectionActions.addView(disconnect, LinearLayout.LayoutParams(0, dp(56), 1f))
+        add(connectionActions)
+
+        text(R.string.page_controls, 18f)
+        val pageActions = LinearLayout(context).apply { orientation = LinearLayout.HORIZONTAL }
+        previous = pageButton(R.string.previous_large, R.string.previous_description,
+            Color.rgb(40, 83, 172), onPrevious)
+        next = pageButton(R.string.next_large, R.string.next_description,
+            Color.rgb(18, 112, 65), onNext)
+        pageActions.addView(previous, LinearLayout.LayoutParams(0, dp(200), 1f).apply {
+            marginEnd = dp(12)
+        })
+        pageActions.addView(next, LinearLayout.LayoutParams(0, dp(200), 1f))
+        add(pageActions)
+
+        add(button(R.string.retry, onRefresh))
+        add(button(R.string.settings, onSettings))
+        text(R.string.foreground_hint, 14f)
     }
 
     fun render(state: HidState) {
@@ -124,8 +143,24 @@ class MainScreen(
         setText(resource)
         isAllCaps = false
         setOnClickListener { action() }
-        add(this)
     }
+
+    private fun pageButton(label: Int, description: Int, color: Int, action: () -> Unit): Button =
+        button(label, action).apply {
+            contentDescription = context.getString(description)
+            gravity = Gravity.CENTER
+            textSize = 24f
+            setTypeface(null, Typeface.BOLD)
+            setPadding(dp(8), dp(12), dp(8), dp(12))
+            backgroundTintList = ColorStateList(
+                arrayOf(intArrayOf(-android.R.attr.state_enabled), intArrayOf()),
+                intArrayOf(Color.rgb(215, 220, 217), color),
+            )
+            setTextColor(ColorStateList(
+                arrayOf(intArrayOf(-android.R.attr.state_enabled), intArrayOf()),
+                intArrayOf(Color.rgb(83, 91, 86), Color.WHITE),
+            ))
+        }
 
     private fun add(view: View) {
         content.addView(view, LinearLayout.LayoutParams(
