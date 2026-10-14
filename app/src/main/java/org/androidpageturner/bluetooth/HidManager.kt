@@ -221,14 +221,14 @@ class HidManager(context: Context, private val onState: (HidState) -> Unit) {
                     BluetoothHidDevice.SUBCLASS1_KEYBOARD, HidDescriptor.keyboard(),
                 )
                 Log.i(TAG, "Register HID app")
-                if (!service.registerApp(sdp, null, null, context.mainExecutor, callback(session))) {
+                val accepted = service.registerApp(sdp, null, null, context.mainExecutor, callback(session))
+                Log.i(TAG, "HID registerApp returned $accepted; waiting for status callback")
+                // The registration callback determines the app's actual status. Some
+                // phone stacks return false while still completing registration.
+                armTimeout(SERVICE_TIMEOUT_MILLIS) {
+                    Log.w(TAG, "HID registration status callback timed out (request accepted=$accepted)")
                     stop()
-                    fail(R.string.error_register)
-                } else {
-                    armTimeout(SERVICE_TIMEOUT_MILLIS) {
-                        stop()
-                        fail(R.string.error_register)
-                    }
+                    fail(R.string.error_register_timeout)
                 }
             }
         }
@@ -248,9 +248,10 @@ class HidManager(context: Context, private val onState: (HidState) -> Unit) {
             if (!valid()) return
             cancelTimeout()
             if (!registered) {
+                val wasRegistered = state.registered
                 Log.w(TAG, "HID app unregistered by Android")
                 stop()
-                fail(R.string.error_unregistered)
+                fail(if (wasRegistered) R.string.error_unregistered else R.string.error_register)
                 return
             }
             Log.i(TAG, "HID app registered")

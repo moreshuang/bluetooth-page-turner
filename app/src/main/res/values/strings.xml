@@ -32,7 +32,8 @@
     <string name="error_permission">Allow Nearby devices, then tap Refresh / Register HID. If permission was denied permanently, enable it in Android app settings.</string>
     <string name="error_proxy">HID Device Profile is unavailable on this phone.</string>
     <string name="error_proxy_timeout">HID service did not respond. Check Bluetooth, then retry. Profile support is unconfirmed.</string>
-    <string name="error_register">Could not register HID. Another HID app may be active. Close it and retry.</string>
+    <string name="error_register">Android reported that HID registration failed. Keep the app visible and retry; details are in Logcat.</string>
+    <string name="error_register_timeout">Android did not confirm HID registration in time. Keep the app visible and retry; details are in Logcat.</string>
     <string name="error_unregistered">Android cancelled HID registration. Keep the app in front and tap Refresh / Register HID.</string>
     <string name="error_service">Bluetooth HID service was lost. Check Bluetooth and retry.</string>
     <string name="error_connect">The host did not connect. Check its HID support and pairing, then retry.</string>

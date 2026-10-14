@@ -1,6 +1,6 @@
 # Technical notes
 
-Primary references reviewed on 2026-10-13.
+Primary references reviewed on 2026-10-13 and 2026-10-14.
 
 ## Android HID integration
 
@@ -20,8 +20,12 @@ implementation manages the HID session through the Activity lifecycle and perfor
 in `onStop`. Returning to the Activity acquires a new proxy and registers again; the user
 then connects the selected host manually.
 
-API return values acknowledge commands. Registration and connection callbacks determine
-application state; hardware tests establish input delivery and page-navigation behavior.
+Registration and connection callbacks determine application state; hardware tests establish
+input delivery and page-navigation behavior. Registration retains its callback and proxy
+until Android reports the result or the request times out, including when `registerApp`
+returns `false`. On the tested Xiaomi 13 / Android 13 build, the call returned `false`
+and a successful registration callback followed. This follows the API's documented
+separation between the method return value and registration status.
 The profile/registration timeout is 10 seconds, and the connection timeout is 20 seconds.
 A timeout invalidates the session so late callbacks are handled as obsolete.
 

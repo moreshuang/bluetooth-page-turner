@@ -1,6 +1,7 @@
 # Device testing
 
-Hardware validation status: **pending** for `0.1.0-dev`.
+Hardware validation status: **partial** for `0.1.0-dev`. HID registration, refresh, and
+reopening passed on Xiaomi 13 / Android 13 on 2026-10-14. Host input validation is pending.
 
 This guide records the Bluetooth HID connection and page-navigation workflow needed for
 the first release. Follow-up volume-button controls depend on successful validation of
@@ -94,8 +95,8 @@ check. Mark outstanding checks as pending.
 
 | Check | Result |
 | --- | --- |
-| HID Device Profile available | Pending |
-| Registration callback true | Pending |
+| HID Device Profile available | Passed on Xiaomi 13 / Android 13, 2026-10-14 |
+| Registration callback true | Passed on Xiaomi 13 / Android 13, 2026-10-14 |
 | Paired-host connection callback | Pending |
 | Left / Right input received on a computer | Pending |
 | E-reader HID input received | Pending |

@@ -1,6 +1,8 @@
 # Build verification
 
 Initial verification date: 2026-10-13 (Asia/Shanghai). App version: `0.1.0-dev`.
+Registration fix verification date: 2026-10-14 (Asia/Shanghai). Debug assembly, all 15 JVM
+unit tests, and Android Lint passed again with the same toolchain.
 
 ## Environment
 
@@ -57,8 +59,20 @@ Compilation, tests, and Lint completed successfully.
 
 ## Hardware validation
 
-The initial verification covered the build artifact and JVM behavior. Hardware checks for
-app launch, HID registration, host connection, page navigation, and power consumption are
+The initial verification covered the build artifact and JVM behavior. The registration
+fix was subsequently installed and checked on a physical phone:
+
+| Item | Observation on 2026-10-14 |
+| --- | --- |
+| Phone | Xiaomi 13, model 2211133G |
+| System | Android 13, MIUI build V14.0.31.0.TMCCNXM |
+| Permissions | Nearby devices permission granted |
+| Registration | `registerApp` returned `false`; `onAppStatusChanged` confirmed registration |
+| UI state | `HID ready · No device selected` |
+| Refresh | Registration recovered and UI returned to ready |
+| Home and reopen | Application registered again and UI returned to ready |
+
+Host connection, page navigation, key release on the host, and power consumption remain
 pending. Track those results using the [device testing guide](DEVICE_TESTING.md).
 
 The current artifact is a debug-signed development APK. Release signing and distribution

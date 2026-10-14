@@ -18,8 +18,15 @@ Notable project changes are recorded here. The current development version is `0
 - Standardized project, contributor, technical, and validation documentation.
 - Focused the project overview on supported functionality and development milestones.
 
+### Fixed
+
+- Wait for the HID registration callback when a phone returns `false` from `registerApp`
+  while completing registration asynchronously. Verified on Xiaomi 13 with Android 13.
+- Distinguish registration failure from callback timeout and provide neutral diagnostic messages.
+
 ### Validation status
 
 Compilation, 15 JVM unit tests, and Android Lint passed during initial build verification.
-Hardware validation of Bluetooth HID registration, connection, and page navigation is pending.
+HID registration, refresh, and reopening passed on Xiaomi 13 with Android 13 on 2026-10-14.
+Hardware validation of host connection and page navigation is pending.
 Volume-button controls, configurable mappings, and screen-off operation are planned milestones.
