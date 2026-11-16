@@ -47,6 +47,10 @@ interface. The tested Kindle used its local host API; see the
 pairing behavior should include a review of the corresponding permissions and user
 interaction.
 
+The [connection development plan](CONNECTION_DEVELOPMENT_PLAN.md) records the proposed
+discoverability flow, service ownership, host scan compatibility, and remembered-host
+reconnection. These changes have pending implementation and device validation.
+
 The app uses explicit receiver flags for the protected Bluetooth state broadcast on Android
 13 and later. Window insets handle system bars, including enforced edge-to-edge layouts on
 Android 15 and 16. Validation on later Android releases is tracked through device testing.

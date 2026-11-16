@@ -18,6 +18,10 @@ Notable project changes are recorded here. The current development version is `0
 
 - Standardized project, contributor, technical, and validation documentation.
 - Focused the project overview on supported functionality and development milestones.
+- Added a connection development plan covering discovery by name, host compatibility,
+  service-managed sessions, one-tap reconnection, and pending acceptance checks.
+- Prioritized connection setup and lifecycle improvements in the roadmap before
+  volume-button controls.
 
 ### Fixed
 

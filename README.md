@@ -7,8 +7,8 @@ simple, local page-turning remote. It uses the standard Bluetooth Classic HID ke
 profile to send navigation keys to a paired host.
 
 **Project status:** early development (`0.1.0-dev`). The current implementation provides
-on-screen Previous and Next controls. Physical volume-button control is planned after
-hardware validation of the initial HID connection and page-navigation workflow.
+on-screen Previous and Next controls. The next priority is discovery by name, pairing,
+and connection lifecycle improvements. Physical volume-button control follows this milestone.
 
 ## Features
 
@@ -125,9 +125,9 @@ are part of device validation.
 | Tablets | Bluetooth keyboard support and reader navigation | Pending |
 | Desktop computers | Bluetooth Classic HID host and application key handling | Pending |
 
-Further hardware testing is the next development milestone. Please include the environment and
-results described in the [device testing guide](docs/DEVICE_TESTING.md) when contributing
-a compatibility report.
+Connection setup and lifecycle validation are the next development priority. Please
+include the environment and results described in the
+[device testing guide](docs/DEVICE_TESTING.md) when contributing a compatibility report.
 
 ## Privacy
 
@@ -147,9 +147,14 @@ a hardware validation item.
 | Milestone | Focus |
 | --- | --- |
 | v0.1.0 | HID registration, paired-host connection, on-screen controls, and hardware validation |
-| v0.2.0 | Foreground volume-button control and configurable key mappings |
-| v0.3.0 | Foreground service evaluation, screen-off operation, and optional reconnection |
-| v0.4.0 | Long presses, double presses, and profiles |
+| v0.2.0 | Discovery by name, interface-based pairing, service-managed sessions, and one-tap reconnection |
+| v0.3.0 | Foreground volume-button control and configurable key mappings |
+| v0.4.0 | Screen-off operation, optional automatic reconnection, and power validation |
+| v0.5.0 | Long presses, double presses, and profiles |
+
+The [connection development plan](docs/CONNECTION_DEVELOPMENT_PLAN.md) records the
+feasibility assessment, host compatibility questions, implementation sequence, and
+acceptance targets. These roadmap entries describe planned work.
 
 Further platform integrations will be evaluated as use cases and compatibility results
 become available. See [CHANGELOG.md](CHANGELOG.md) for the development history.

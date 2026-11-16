@@ -22,6 +22,8 @@ Use [the device testing guide](docs/DEVICE_TESTING.md) for compatibility reports
 
 The current milestone is foreground HID registration, connection, and on-screen page
 navigation. Hardware validation of this workflow precedes volume-button controls.
+The next development priority is discovery by name, pairing, and connection lifecycle
+improvements, as described in the [connection development plan](docs/CONNECTION_DEVELOPMENT_PLAN.md).
 Subsequent milestones are listed in the [roadmap](README.md#roadmap).
 
 Keep changes focused on a demonstrated use case. Use Kotlin, a single app module, small

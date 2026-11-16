@@ -116,6 +116,10 @@ check. Mark outstanding checks as pending.
 | Reconnect after manual Disconnect | Pending |
 | Permission guidance and Bluetooth recovery | Pending |
 
-After this workflow passes, validate foreground volume-button handling. The planned
+The next milestone follows the [connection development plan](CONNECTION_DEVELOPMENT_PLAN.md):
+discovery by name, interface-based pairing, service-managed sessions, and one-tap
+reconnection. Its acceptance targets are pending and extend the existing input checks.
+
+After that milestone, validate foreground volume-button handling. The planned
 implementation uses `dispatchKeyEvent`, consumes DOWN and UP events, and emits one HID
 pulse per initial press while suppressing repeated key-down events.
