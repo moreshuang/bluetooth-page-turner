@@ -3,6 +3,9 @@
 Validation date: **2026-10-14 (Asia/Shanghai)**. The tested Android app is the
 `0.1.0-dev` debug build from commit [`13cfbda`](https://github.com/moreshuang/bluetooth-page-turner/commit/13cfbda).
 
+A subsequent [LineageOS validation report](LINEAGEOS_VALIDATION.md) records the
+2026-11-16 Android 16 session, HID profile configuration, screenshots, and page turns.
+
 The maintainer tested Bluetooth HID page navigation with a Xiaomi 13 and a Kindle
 Paperwhite 6. Pairing, connection, and both page directions succeeded. The phone UI,
 Android pairing record, and host status were captured during the session. Page-turn

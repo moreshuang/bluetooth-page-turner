@@ -5,6 +5,10 @@ connection, and both page directions passed on Xiaomi 13 / Android 13 with Kindl
 Paperwhite 6 on 2026-10-14. See the [physical device validation report](HARDWARE_VALIDATION.md)
 for the configuration, procedure, and screenshots.
 
+The [LineageOS validation report](LINEAGEOS_VALIDATION.md) covers Android 16 on
+2026-11-16. Registration, pairing, connection, and both page directions passed
+after a runtime HID Device profile setting was enabled on the rooted test phone.
+
 This guide records the Bluetooth HID connection and page-navigation workflow needed for
 the first release. Follow-up volume-button controls depend on successful validation of
 this workflow.

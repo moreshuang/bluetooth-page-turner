@@ -1,0 +1,12 @@
+{
+  "version": "3.17.5-ba48659",
+  "daemon_running": true,
+  "device_count": 1,
+  "connection_count": 1,
+  "connections": [
+    {
+      "hid_ready": true,
+      "descriptor_size": 65
+    }
+  ]
+}
